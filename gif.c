@@ -4,12 +4,6 @@
 #include "matrix.h"
 #include "gif.h"
 
-//GIF Image en tableau
-//#include "chat-38_32gif.h"
-//#include "chat-38_32_intergif.h"
-//#include "tortue6fr_64_40gif.h"
-#include "bmp_rot-6frmgif.h"
-
 static uint32_t ptrfile=0;
 
 //Canvas Gif décompressé (en code de couleurs)
@@ -54,29 +48,29 @@ static uint16_t pixstackptr=0;
 static uint8_t pixstack[320];
 
 // Lecture indrecte du tableau picture.h
-uint8_t getgif(void) {
+uint8_t getgif(uint8_t tab[]) {
 // if ( ptrfile >= sizeof(pixgif) )
 //   return(TRAILER);
 // else  
-  return(pixgif[ptrfile++]);
+  return(tab[ptrfile++]);
 }
 
 
 //---------------------------------------------
 //        LOGICAL  SCREEN  DESCRIPTOR (7)
 //---------------------------------------------
-int process_header(void) {
+int process_header(uint8_t tab[]) {
 uint8_t x;
 
- x = getgif();
+ x = getgif(tab);
  if (x!=0x47) exit(0);    // G
- x = getgif();
+ x = getgif(tab);
  if (x!=0x49) exit(0);    // I
- x = getgif();
+ x = getgif(tab);
  if (x!=0x46) exit(0);    // F
 
  for (uint8_t nn=0; nn<3 ; nn++) {
-   x = getgif();
+   x = getgif(tab);
  }
  return 1;
 }
@@ -85,37 +79,37 @@ uint8_t x;
 //---------------------------------------------
 //       LOGICAL  SCREEN  DESCRIPTOR (7)
 //---------------------------------------------
-void process_logical_descriptor(void) {
+void process_logical_descriptor(uint8_t tab[]) {
 
- pixwidth = getgif() + 256 * getgif();
- pixheight = getgif() + 256 * getgif();
+ pixwidth = getgif(tab) + 256 * getgif(tab);
+ pixheight = getgif(tab) + 256 * getgif(tab);
  
- //redim le canvas
+ //redim le canvas du Gif (logique et pas Leds physique)
  maxpixels = pixwidth * pixheight;
  //pix = (uint8_t*) malloc(maxpixels);
 
- uint8_t field = getgif();
+ uint8_t field = getgif(tab);
  
  //Test Global color table ?
  glob_coltab_size = 1 << ((field & 7) + 1);
  glob_coltab_ok = (field & 128);
    
- bgcolindex = getgif();
- pixratio = getgif();
+ bgcolindex = getgif(tab);
+ pixratio = getgif(tab);
 }
 
 
 //---------------------------------------------
 //           IMAGE   DESCRIPTOR (9)
 //---------------------------------------------
-void process_image_descriptor(void) {
+void process_image_descriptor(uint8_t tab[]) {
 
-  clipleft = getgif() + 256 * getgif();   // clip left pos
-  cliptop = getgif() + 256 * getgif();    // clip top pos
-  clipwidth = getgif() + 256 * getgif();
-  clipheight = getgif() + 256 * getgif();
+  clipleft = getgif(tab) + 256 * getgif(tab);   // clip left pos
+  cliptop = getgif(tab) + 256 * getgif(tab);    // clip top pos
+  clipwidth = getgif(tab) + 256 * getgif(tab);
+  clipheight = getgif(tab) + 256 * getgif(tab);
   
-  uint8_t f = getgif();
+  uint8_t f = getgif(tab);
   
   //Lobal color table ?
   loc_coltab_size = 1 << ((f & 7) + 1);
@@ -125,29 +119,29 @@ void process_image_descriptor(void) {
 //---------------------------------------------
 //    APPLICATION (NETSCAPE) EXTENSION (11+)
 //---------------------------------------------
-void process_appli_extension(void) {
+void process_appli_extension(uint8_t tab[]) {
 uint8_t a,b,c1,c2,c3,x;
 
-  b = getgif();
+  b = getgif(tab);
   //capte les 3 premiers chars pour test
   //soit 'NETSCAPE' (gifanim) soit 'XMP' (???)
-  c1 = getgif();
-  c2 = getgif();
-  c3 = getgif();
-  for (a = 1; a < b-3; a++) x = getgif();
+  c1 = getgif(tab);
+  c2 = getgif(tab);
+  c3 = getgif(tab);
+  for (a = 1; a < b-3; a++) x=getgif(tab);
   
   //Si NETSCAPE (gifanim)
   if ( (c1=='N') && (c2=='E') && (c3=='T') ) {
-    a = getgif();  // must be = 3
-    b = getgif();  // must be = 1
-    display_times = getgif();
-    display_times = display_times + 256 * getgif();  // n fois loops (0 = infini)
+    a = getgif(tab);  // must be = 3
+    b = getgif(tab);  // must be = 1
+    display_times = getgif(tab);
+    display_times = display_times + 256 * getgif(tab);  // n fois loops (0 = infini)
   }
   else
     //Si XMP vide ???
     while (1) {
       if (x==0) break;
-      x = getgif();
+      x = getgif(tab);
     }
 }
 
@@ -155,23 +149,23 @@ uint8_t a,b,c1,c2,c3,x;
 //----------------------------------------------
 // Graphics Control extension (Anim & Transpar)
 //----------------------------------------------
-void process_control_extension(void) {
+void process_control_extension(uint8_t tab[]) {
 uint8_t a,b;
 
   //len of data sub-block
-  a = getgif();       // must be = 4 (byte size)
-  b = getgif();       // packed fields - graphics disposal
+  a = getgif(tab);       // must be = 4 (byte size)
+  b = getgif(tab);       // packed fields - graphics disposal
   
   // >0 si color transparence
   display_transpa = b & 1;
   
   // 01 (dont dispose / graphic), 02 (overwrite graph / background color), 04 (overwrite graphic with previous graphic)
   display_disposal = (b & 0x1C) >> 2;
-  display_ms = getgif();
-  display_ms = display_ms + 256 * getgif();  // ms / frames
+  display_ms = getgif(tab);
+  display_ms = display_ms + 256 * getgif(tab);  // ms / frames
   
   //color transparence index
-  display_trans_col = getgif();              // Transpar Color Index
+  display_trans_col = getgif(tab);              // Transpar Color Index
 }     
 
 
@@ -182,7 +176,7 @@ uint8_t a,b;
 //---------------------------------------------------
 //Sort si packleft=0 : plus de paquets à lire (getCode = endcode)
 //Sort si fin du fichier dépassée (getCode = endcode)
-uint16_t getCode(void) {
+uint16_t getCode(uint8_t tab8[]) {
 
  //enquille les 9 bits - rentre sur le 8 - shift vers droite
  for (uint8_t nn = 0; nn < tablesize; nn++) {
@@ -199,13 +193,13 @@ uint16_t getCode(void) {
      mask = 8;
      //Test si charger nouveau paquet de gif bytes ?
      if (packleft == 0) {
-       packleft = getgif();
+       packleft = getgif(tab8);
        //POUR SECURITE - Test si sort du Tableau ?
-       if (gifptr > sizeof(pixgif)) return(endcode);
+       if (gifptr > sizeof(tab8)) return(endcode);
        //test si plus de paquets picture datas
        if (packleft == 0) return(endcode);
      }
-     newx = getgif();
+     newx = getgif(tab8);
      packleft = packleft - 1;
    }
  }
@@ -245,8 +239,6 @@ void Setpix(uint8_t z) {
 }
 
 void pset2(uint16_t x, uint16_t y, uint8_t col) {
- // test si sort écran ?
- if (y < nMatrix_Y * nLedsMatrix_Y) { 
   // Case 0, 1
   if (display_disposal < 2) {
     //Si dans le nouveau clip ?
@@ -266,7 +258,6 @@ void pset2(uint16_t x, uint16_t y, uint8_t col) {
    else
      Pset(x, y, coltab[col].r, coltab[col].g, coltab[col].b);
   }
- }
 }
 
 //--------------------------------------------------------
@@ -320,7 +311,7 @@ if (interlace > 0) {
 
 
 //Raz le dico / clearcode doit etre réglé
-void Raz_dico(void) {
+void Raz_dico(uint8_t tab[]) {
 uint16_t a, b;
 
  tablesize = initablesize;
@@ -336,7 +327,7 @@ uint16_t a, b;
  }
  
  dicoptr = 1 + endcode;
- newb9 = getCode();
+ newb9 = getCode(tab);
 }
 
 
@@ -345,7 +336,7 @@ uint16_t a, b;
  *  GIF-encoded file
  * 
  ****************************************************************/
-void process_gif(void) {
+void process_gif(uint8_t tab[]) {
 uint8_t ext, x;
 uint16_t a, b, i;
 uint16_t pt=0;
@@ -357,18 +348,18 @@ uint16_t pt=0;
  pixstackptr=0;
  
  // A GIF file starts with a Header GIF
- if (process_header()<0) return;
+ if (process_header(tab)<0) return;
  
  //Logical desc
- process_logical_descriptor();
- 
+ process_logical_descriptor(tab);
+
  // Load GLOBAL COLOR TABLE
  if (glob_coltab_ok > 0) {
    for (i=0; i < glob_coltab_size; i++) {
      // static rgb *glob_coltab;
-     coltab[i].r = getgif();
-     coltab[i].g = getgif();
-     coltab[i].b = getgif();
+     coltab[i].r = getgif(tab);
+     coltab[i].g = getgif(tab);
+     coltab[i].b = getgif(tab);
    }
  }
     
@@ -377,10 +368,10 @@ uint16_t pt=0;
 
  // Analyse les Extensions
  while (1) {
-   ext = getgif();
+   ext = getgif(tab);
    while (1) {
      if (ext>0) break; 
-     ext=getgif();
+     ext=getgif(tab);
    }
    
    //Si Fin ?
@@ -392,24 +383,24 @@ uint16_t pt=0;
    if (ext != EXTENSION_INTRODUCER) break;  // != 21
 
    //Traite next Extension
-   ext = getgif();
+   ext = getgif(tab);
   
    switch (ext) {
    case APPLICATION_EXTENSION:       // FF
-     process_appli_extension();
+     process_appli_extension(tab);
      break;
 
    case GRAPHIC_CONTROL:             // F9
-     process_control_extension();
+     process_control_extension(tab);
      break;
      
    default:
-     b = getgif();                           // comments ou autres...
-     for (a = 0; a < b; a++) x = getgif();   // !!!!! A VOIR !!!!!
+     b = getgif(tab);                           // comments ou autres...
+     for (a = 0; a < b; a++) x = getgif(tab);   // !!!!! A VOIR !!!!!
    }
    
    //Fin de bloc extension = 0 !
-   ext = getgif();
+   ext = getgif(tab);
   }
   
   // Si Fin
@@ -421,22 +412,22 @@ uint16_t pt=0;
   if (ext != IMAGE_DESCRIPTOR) break;
 
   //Donne les clip/left/top/width/interlace/local coltab...
-  process_image_descriptor();
+  process_image_descriptor(tab);
   
   // LOCAL COLOR TABLE ?
   if (loc_coltab_size > 4) {
     for (i=0; i < loc_coltab_size; i++) {
       // static rgb *glob_coltab;
-      coltab[i].r = getgif();
-      coltab[i].g = getgif();
-      coltab[i].b = getgif();
+      coltab[i].r = getgif(tab);
+      coltab[i].g = getgif(tab);
+      coltab[i].b = getgif(tab);
     }
   }
   
 //---------------------------------------------
 //           I M A G E     D A T A S
 //---------------------------------------------
- initablesize = (1 + getgif());      // 9 bits au debut
+ initablesize = (1 + getgif(tab));      // 9 bits au debut
  tablesize = initablesize;
  MSBbit = 1 << (initablesize - 1);
  maxdicoptr = (1 << tablesize) - 1;
@@ -465,18 +456,18 @@ uint16_t pt=0;
 //-------------------------------------------------
 //                   DECODE  L Z W
 //-------------------------------------------------
- Raz_dico();
+ Raz_dico(tab);
  
  while (1) {
-   newb9 = getCode();
+   newb9 = getCode(tab);
    
    if (newb9 == clearcode) {
      tablesize = initablesize;
      MSBbit = 1 << (initablesize - 1);
      maxdicoptr = (1 << tablesize) - 1;
-     Raz_dico();
+     Raz_dico(tab);
      oldcode=newb9;
-     newb9 = getCode();
+     newb9 = getCode(tab);
 	   Setpix(dico[oldcode].code);
    }
    
@@ -561,18 +552,7 @@ uint16_t pt=0;
  // SetXY(48, 1);
  // PrintHex(frame_num++);
 
-  sleep_ms(250);
-
-/*  for (a=1024; a<1812; a++) {
-    SetXY(0, 1);
-    PrintHex2(a);
-    PrintHex2(dico[a].code);
-    sleep_ms(888);
-    SetXY(32, 1);
-    PrintChar(0x0a);
-    PrintChar(0x0a);
-    sleep_ms(200);
-  }  */
+  sleep_ms(99);
  
  //end frame -> next ...
  }

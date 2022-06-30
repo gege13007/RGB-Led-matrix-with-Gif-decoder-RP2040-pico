@@ -1,5 +1,5 @@
 add_executable(blink
-        blink.c
+        main.c
         matrix.c
         gif.c
         )

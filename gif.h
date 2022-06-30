@@ -25,9 +25,9 @@ typedef struct {
 //Decode
 void pushpix(uint8_t);
 void poppix(void); 
-uint8_t getgif(void);
+uint8_t getgif(uint8_t giftab[]);
 void Setpix(uint8_t);
-void process_gif(void);
+void process_gif(uint8_t giftab[]);
 
 
 

@@ -19,18 +19,27 @@
 
 #define BOOT_BUTTON 22   // Reset par BOOTSEL
 
-#define LED_PIN   25     // PICO_DEFAULT_LED_PIN;
+#define LED_PIN   25     // PICO_DEFAULT_LED_PIN
 
-// PIXELS MAX X & Y
-#define max_pixel_X        320     // donne 4 x 40960 oc. = 164 ko / 264ko de RAM
-#define max_pixel_Y        128     // LIMITE par la RAM du PICO
-  
+#define BUTTON1  16      // Bouton CTL 1
+#define BUTTON2  17      // Bouton CTL 2
+
+// - - - - Description PHYSIQUE de L'écran
+// !!! TOUTES MATRICES SONT SUR UNE SEULE LIGNE !!!!
 static uint8_t nMatrix_Y = 1;
-static uint8_t nMatrix_X = 2;
+static uint8_t nMatrix_X = 6;
+
+//Si >0 alors mapping des panneaux en ZStripe (zigzag) de x large
+static uint8_t zStripes_X = 3;
 
 // Nombre de LEDS par Matrices
 static uint8_t nLedsMatrix_Y = 32;
 static uint8_t nLedsMatrix_X = 32;
+
+// - - - - Description LOGIQUE de L'écran - - - - - - 
+// Dimensions du Buffer logique BITMAP en PIXELS X & Y
+#define max_pixel_X        96     // donne 4 x 40960 oc. = 164 ko / 264ko de RAM
+#define max_pixel_Y        64     // LIMITE par la RAM du PICO
 
 static uint8_t xRED[max_pixel_X][max_pixel_Y] = {0};
 static uint8_t xGREEN[max_pixel_X][max_pixel_Y] = {0};
@@ -47,6 +56,8 @@ void PrintChar(uint8_t );
 void PrintHex(uint8_t );
 void PrintHex2(uint16_t nn);
 void Pset(uint16_t x,uint16_t y,uint8_t RR,uint8_t GG,uint8_t BB);
+void PsetnoG(uint16_t x,uint16_t y,uint8_t RR,uint8_t GG,uint8_t BB);
 void core2();
 void Home(void);
+void Fade_out(void);
 void SetXY(uint16_t x, uint16_t y);
