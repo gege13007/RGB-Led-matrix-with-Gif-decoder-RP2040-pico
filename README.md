@@ -1,3 +1,9 @@
-# RGB Led matrix-Gif decoder with a Pico-RP2040
+# Controlling RGB LED display with a PICO Raspberry Pi RP2040
 This is a simple implementation of an RGB Led panel (matrix.c) with a RP2040 Pico Raspberry (price 6 €).
-This code is also a GIF anim decoder (gif.c). 
+This library is designed to control up to 8 32x32 RGB LED panels connected with a single chain to the Raspberry Pico RP2040.
+
+Even overclocked at 200MHz, the PWM colors palette has to be limited to 4 Bits per channel with 8 panels.
+It's even possible to improve the number of colors with less panel. So this implementation is cheap but limited to simple pictures.
+Don't try to display complex pictures with subtle color !
+
+This library also include a build in GIFAnim decoder (gif.c). 
