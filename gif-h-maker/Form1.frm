@@ -4,25 +4,17 @@ Begin VB.Form Form1
    AutoRedraw      =   -1  'True
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Form1"
-   ClientHeight    =   5100
+   ClientHeight    =   3825
    ClientLeft      =   45
    ClientTop       =   390
    ClientWidth     =   3585
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   255
+   ScaleHeight     =   191.25
    ScaleMode       =   2  'Point
    ScaleWidth      =   179.25
    StartUpPosition =   3  'Windows Default
-   Begin VB.CommandButton Command1 
-      Caption         =   "décode GIF"
-      Height          =   495
-      Left            =   840
-      TabIndex        =   2
-      Top             =   3720
-      Width           =   1695
-   End
    Begin VB.CommandButton Command2 
       Caption         =   "Picture ->  .h"
       Height          =   495
@@ -61,60 +53,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
  
-Private Sub Command1_Click()
-Dim xh%, xl%, nw%
-Dim xx%, oc%, nxx As Long
-Dim s$, f$, f2$
-
-'Ouvre le fichier gpx entrée en lecture
-CommonDlg.ShowOpen
-
-f$ = CommonDlg.FileName
-f2$ = Replace(f$, ".", "") + ".h"
-
-'Ouvre le fichier .h en écriture
-Set logfilobj = CreateObject("Scripting.FileSystemObject")
-Set logfile = logfilobj.CreateTextFile(f2$, True)
-logfile.WriteLine ("uint8_t bmp[]={")
- 
-'Ouvre le fichier histo en lecture
-Open (f$) For Binary As #1
-'Boucle lecture fichier - Lit sans arret & Arrete tout si fin de fichier !
-oc = 0
-Do
-  Get #1, , xx
-  oc = oc + 2
-  If oc > 1020 Then
-    oc = oc
-  End If
-  If xx < 0 Then
-    nxx = 65536 + xx
-  Else
-    nxx = xx
-  End If
-  xl = (nxx And 255)
-  xh = (nxx - xl) / 256
-  logfile.Write ("0x" + Hex$(xl) + "," + "0x" + Hex$(xh))
-  
-  If EOF(1) Then Exit Do
-  'sinon ,
-  logfile.Write (",")
-   
-  nw = nw + 1
-  If nw > 7 Then
-    logfile.Write (Chr$(13))
-    nw = 0
-  End If
-  
-Loop
-Close #1
-
-logfile.Write ("};")
-logfile.Close
- 
-MsgBox f$ + " codé en " + f2$
-Unload Me
-End Sub
 
 Private Sub Command2_Click()
 Dim xh%, xl%, nw%
