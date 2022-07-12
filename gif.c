@@ -7,7 +7,7 @@
 static uint32_t ptrfile=0;
 
 //Canvas Gif décompressé (en code de couleurs)
-static uint8_t pix[max_pixel_X * max_pixel_Y];
+static uint8_t pix[nb_pixel_X * nb_pixel_Y];
 
 //Table color globale (FIXE)
 static rgb coltab[256*3];
@@ -242,8 +242,10 @@ void pset2(uint16_t x, uint16_t y, uint8_t col) {
   // Case 0, 1
   if (display_disposal < 2) {
     //Si dans le nouveau clip ?
+    if (x < clipleft) return;
     if (y < cliptop) return;
-    if (y > cliptop + clipheight) return;
+    if (x >= clipleft + clipwidth) return;
+    if (y >= cliptop + clipheight) return;    
     
     //test si draw ou transparent
     if ((col != display_trans_col) || (display_transpa == 0))
@@ -552,7 +554,10 @@ uint16_t pt=0;
  // SetXY(48, 1);
  // PrintHex(frame_num++);
 
-  sleep_ms(99);
+  if (display_ms<2) display_ms=20;
+  if (display_ms>19999) display_ms=8000;
+
+  sleep_ms(display_ms);
  
  //end frame -> next ...
  }

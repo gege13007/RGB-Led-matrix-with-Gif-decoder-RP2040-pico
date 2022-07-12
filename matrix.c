@@ -36,8 +36,8 @@ void setRow(uint8_t row) {
 }
 
 void Pset(uint16_t x,uint16_t y,uint8_t RR,uint8_t GG,uint8_t BB) {
-  if (x < max_pixel_X) {
-    if (y < max_pixel_Y) {
+  if (x < nb_pixel_X) {
+    if (y < nb_pixel_Y) {
       xRED[x][y] = gamma8[RR];
       xGREEN[x][y] = gamma8[GG];
       xBLUE[x][y] = gamma8[BB];
@@ -46,9 +46,13 @@ void Pset(uint16_t x,uint16_t y,uint8_t RR,uint8_t GG,uint8_t BB) {
 }
 
 void PsetnoG(uint16_t x,uint16_t y,uint8_t RR,uint8_t GG,uint8_t BB) {
-  xRED[x][y] = RR;
-  xGREEN[x][y] = GG;
-  xBLUE[x][y] = BB;
+  if (x < nb_pixel_X) {
+    if (y < nb_pixel_Y) {
+      xRED[x][y] = RR;
+      xGREEN[x][y] = GG;
+      xBLUE[x][y] = BB;
+    }
+  }
 }
 
 void Home(void) {
@@ -63,22 +67,24 @@ void SetXY(uint16_t x, uint16_t y) {
 
 //Efface ecran
 void Fade_out(void) {
- for (uint8_t l=0; l<255; l++) {
-   for (uint16_t x=0; x < max_pixel_X; x++) {
-     for (uint8_t y=0; y < max_pixel_Y; y++) {
+ for (uint16_t l=0; l<255; l++) {
+   for (uint16_t x=0; x < nb_pixel_X; x++) {
+     for (uint8_t y=0; y < nb_pixel_Y; y++) {
        if (xRED[x][y]!=0) xRED[x][y]=xRED[x][y]-1;
        if (xGREEN[x][y]!=0) xGREEN[x][y]=xGREEN[x][y]-1;
        if (xBLUE[x][y]!=0) xBLUE[x][y]=xBLUE[x][y]-1;
      }
    }
+   sleep_us(500);
  }
 }
+
 
 //------- BALAYAGE PANNEAU RGB - TACHE DE FOND - MULTICORE 2 -------
 void core2() {
 uint16_t frame = 0;
-uint8_t xpan, col, col0, col2, rows, rows2, rows216, rows16;
-uint8_t Ymatrix_1, Ymatrix_2_1;
+uint16_t xpan, col, col0, col2, rows, rows2, rows216, rows16;
+uint16_t Ymatrix_1, Ymatrix_2_1;
 
  while (1) {   
    if (!gpio_get(BOOT_BUTTON)) reset_usb_boot(0,0);

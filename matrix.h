@@ -25,12 +25,11 @@
 #define BUTTON2  17      // Bouton CTL 2
 
 // - - - - Description PHYSIQUE de L'écran
-// !!! TOUTES MATRICES SONT SUR UNE SEULE LIGNE !!!!
-static uint8_t nMatrix_Y = 1;
+// Longueur Totale des MATRICES en série (sur une seule ligne)
 static uint8_t nMatrix_X = 6;
 
-//Si >0 alors mapping des panneaux en ZStripe (zigzag) de x large
-static uint8_t zStripes_X = 3;
+//Nb de panneaux sur vrai largeur (mapping des panneaux en ZStripe = zigzag) de x large
+static uint8_t zStripes_X = 6;
 
 // Nombre de LEDS par Matrices
 static uint8_t nLedsMatrix_Y = 32;
@@ -38,16 +37,20 @@ static uint8_t nLedsMatrix_X = 32;
 
 // - - - - Description LOGIQUE de L'écran - - - - - - 
 // Dimensions du Buffer logique BITMAP en PIXELS X & Y
-#define max_pixel_X        96     // donne 4 x 40960 oc. = 164 ko / 264ko de RAM
-#define max_pixel_Y        64     // LIMITE par la RAM du PICO
+// la limite en RAM est proche de 164 ko sur 264ko dispo.
+// * par exemple 320 * 128 pixels -> 4 x 40960 oc.
+// * peut être supérieur a l'afficheur physique
+// * buffer utilisé pour fichiers gif
+#define nb_pixel_X        256     // donne 4 x 61440 oc. = 33 ko / 264ko de RAM
+#define nb_pixel_Y        32
 
-static uint8_t xRED[max_pixel_X][max_pixel_Y] = {0};
-static uint8_t xGREEN[max_pixel_X][max_pixel_Y] = {0};
-static uint8_t xBLUE[max_pixel_X][max_pixel_Y] = {0};
+static uint8_t xRED[nb_pixel_X][nb_pixel_Y] = {0};
+static uint8_t xGREEN[nb_pixel_X][nb_pixel_Y] = {0};
+static uint8_t xBLUE[nb_pixel_X][nb_pixel_Y] = {0};
 
 //Curseur next PrintChar
-static uint8_t CurX=0;
-static uint8_t CurY=0; 
+static uint16_t CurX=0;
+static uint16_t CurY=0; 
  
 //============== Declarations ===========
 void Init_GPIO();
