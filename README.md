@@ -6,4 +6,8 @@ Even overclocked at 200MHz, the PWM colors palette has to be limited to 4 Bits p
 It's even possible to improve the number of colors with less panel. So this implementation is cheap but limited to simple pictures.
 Don't try to display complex pictures with subtle color !
 
-This library also include a build in GIFAnim decoder (gif.c). 
+This library also include a build in GIFAnim decoder (gif.c).
+
+Here's my prototype
+
+https://github.com/gege13007/RGB-Led-matrix-with-Gif-decoder-RP2040-pico/blob/main/rgb-leds-pico-rear_105537.jpg
