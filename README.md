@@ -8,6 +8,8 @@ Don't try to display complex pictures with subtle color !
 
 This library also include a build in GIFAnim decoder (gif.c).
 
-Here's my prototype
+Here's my prototype with 6 x 32x32 leds panels
+
+![green arrows](https://github.com/gege13007/RGB-Led-matrix-with-Gif-decoder-RP2040-pico/blob/main/green-arrow-6_105644.jpg)
 
 ![the Pico raspberry on led panels](https://github.com/gege13007/RGB-Led-matrix-with-Gif-decoder-RP2040-pico/blob/main/rgb-leds-pico-rear_105537.jpg)
