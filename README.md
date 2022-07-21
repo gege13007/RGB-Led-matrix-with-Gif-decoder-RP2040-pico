@@ -41,13 +41,15 @@ The GPIO mapping and all connections are described in matrix.h. The control of t
 | G1 | 12 | Green interlaced 1/16|
 | B1 | 13 | Blue interlaced 1/16|
 
+| Other GPIO | Pico Pin | Function | 
+| :---    |  :---:  | :---: |
 | BOOT_BUTTON | 22  | Reset BOOTSEL |
 | LED_PIN | 25 | DEFAULT_LED_PIN |
-
 | BUTTON1 | 16 | Optional Button 1 |
 | BUTTON2 | 17 | Optional Button 2 |
 
 ## Limitations
+For now, the PICO was tested only with 32x32 leds matrix, and up to 8 matrix (256 x 32 pixels). This 8 matrix can be assembled in 2 lines of 4 matrix (reverse Z-stripe 128x64 pixels) or in a single line (256x32 pixels). In both case I think it's a MAXIMUM for a small Pico (even overclocked at 200MHz). And in this configuration we have only 256/32 = 8 levels only for each colors ( 512 colors max ).
 
 ## Utilities
 
