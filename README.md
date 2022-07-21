@@ -13,8 +13,10 @@ This library also include a build in GIFAnim decoder (gif.c).
 Here's my prototype with 6 x 32x32 leds panels
 
 ![green arrows](https://github.com/gege13007/RGB-Led-matrix-with-Gif-decoder-RP2040-pico/blob/main/green-arrow-6_105644.jpg)
+example of arrow scrrren panel
 
 ![6 leds panels and a pico](https://github.com/gege13007/RGB-Led-matrix-with-Gif-decoder-RP2040-pico/blob/main/panels-6-leds-rear_11014.jpg)
+six matrix are chained, a Pico, and a power supply
 
 ![the Pico raspberry on led panels](https://github.com/gege13007/RGB-Led-matrix-with-Gif-decoder-RP2040-pico/blob/main/rgb-leds-pico-rear_105537.jpg)
 
@@ -24,7 +26,7 @@ Here's my prototype with 6 x 32x32 leds panels
 The GPIO mapping and all connections are described in matrix.h. The control of the chained dot-matrix is made by matric.c. This task needs for speed, and is designed to run in the second of the two cores of our RP2040.
 
 | HUB75 Pin | Pico Pin | Function | 
-| :---      |  :---:    | |
+| :---      |  :---:  | :---: |
 | OE | 0 | Led Output enable | 
 | LAT | 1 | Latche shifted datas|
 | CLK | 2 | Clock of shifted datas|
