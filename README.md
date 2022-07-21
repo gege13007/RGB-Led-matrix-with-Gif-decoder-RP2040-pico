@@ -21,10 +21,29 @@ Here's my prototype with 6 x 32x32 leds panels
 ## Types of display
 
 ## Connection
-| HUB75 Pin | Pico Pin | 
-| :---      |     :---:      | 
-| git statu | status     | 
-| git diff  | diff       | 
+The GPIO mapping and all connections are described in matrix.h. The control of the chained dot-matrix is made by matric.c. This task needs for speed, and is designed to run in the second of the two cores of our RP2040.
+
+| HUB75 Pin | Pico Pin | Function | 
+| :---      |  :---:    | |
+| OE | 0 | Led Output enable | 
+| LAT | 1 | Latche shifted datas|
+| CLK | 2 | Clock of shifted datas|
+| A | 4 | Line Selection 1 |
+| B | 5 | Line Selection 2 |
+| C | 6 | Line Selection 4 |
+| D | 7 | Line Selection 8 |
+| R2 | 8 | Red interlaced 16/32 |
+| G2 | 9 | Greeen interlaced 16/32|
+| B2 | 10 | Blue interlaced 16/32|
+| R1 | 11 | Red interlaced 1/16|
+| G1 | 12 | Green interlaced 1/16|
+| B1 | 13 | Blue interlaced 1/16|
+
+| BOOT_BUTTON | 22  | Reset BOOTSEL |
+| LED_PIN | 25 | DEFAULT_LED_PIN |
+
+| BUTTON1 | 16 | Optional Button 1 |
+| BUTTON2 | 17 | Optional Button 2 |
 
 ## Limitations
 
