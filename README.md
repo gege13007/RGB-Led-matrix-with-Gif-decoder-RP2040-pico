@@ -10,15 +10,16 @@ Don't try to display complex pictures with subtle color !
 
 This library also include a build in GIFAnim decoder (gif.c).
 
-Here's my prototype with 6 x 32x32 leds panels
+![open pizza flashing](https://github.com/gege13007/RGB-Led-matrix-with-Gif-decoder-RP2040-pico/blob/main/open-pizza.jpg)
+Example of flashing panel 2 x 4 x 32 x 32 leds panels
 
 ![green arrows](https://github.com/gege13007/RGB-Led-matrix-with-Gif-decoder-RP2040-pico/blob/main/green-arrow-6_105644.jpg)
-example of arrow scrrren panel
+Example of moving arrow screen panel 6 x 32x32 leds panels
 
 ![6 leds panels and a pico](https://github.com/gege13007/RGB-Led-matrix-with-Gif-decoder-RP2040-pico/blob/main/panels-6-leds-rear_11014.jpg)
-six matrix are chained, a Pico, and a power supply
 
 ![the Pico raspberry on led panels](https://github.com/gege13007/RGB-Led-matrix-with-Gif-decoder-RP2040-pico/blob/main/rgb-leds-pico-rear_105537.jpg)
+Six matrix chained, with a Pico and a power supply
 
 ## Types of display
 
