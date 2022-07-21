@@ -16,8 +16,6 @@ Example of flashing panel 2 x 4 x 32 x 32 leds panels
 ![green arrows](https://github.com/gege13007/RGB-Led-matrix-with-Gif-decoder-RP2040-pico/blob/main/green-arrow-6_105644.jpg)
 Example of moving arrow screen panel 6 x 32x32 leds panels
 
-![6 leds panels and a pico](https://github.com/gege13007/RGB-Led-matrix-with-Gif-decoder-RP2040-pico/blob/main/panels-6-leds-rear_11014.jpg)
-
 ![the Pico raspberry on led panels](https://github.com/gege13007/RGB-Led-matrix-with-Gif-decoder-RP2040-pico/blob/main/rgb-leds-pico-rear_105537.jpg)
 Six matrix chained, with a Pico and a power supply
 
