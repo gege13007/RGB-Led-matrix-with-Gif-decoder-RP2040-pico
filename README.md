@@ -21,6 +21,10 @@ Here's my prototype with 6 x 32x32 leds panels
 ## Types of display
 
 ## Connection
+| HUB75 Pin | Pico Pin | 
+| :---      |     :---:      | 
+| git statu | status     | 
+| git diff  | diff       | 
 
 ## Limitations
 
