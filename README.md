@@ -20,6 +20,7 @@ Example of moving arrow screen panel 6 x 32x32 leds panels
 Six matrix chained, with a Pico and a power supply
 
 ## Types of display
+There are various types of displays that come with the same Hub75 connector. From 16, 32 or 64 lines or colomns, this librairy works for now only with 32x32 leds matrix. The 32 lines are adressed with A,B,C,D lines. The Pico Raspberry can drive one chain of matrix (up to 8 can be chained).
 
 ## Connection
 The GPIO mapping and all connections are described in matrix.h. The control of the chained dot-matrix is made by matric.c. This task needs for speed, and is designed to run in the second of the two cores of our RP2040.
@@ -51,4 +52,4 @@ The GPIO mapping and all connections are described in matrix.h. The control of t
 For now, the PICO was tested only with 32x32 leds matrix, and up to 8 matrix (256 x 32 pixels). This 8 matrix can be assembled in 2 lines of 4 matrix (reverse Z-stripe 128x64 pixels) or in a single line (256x32 pixels). In both case I think it's a MAXIMUM for a small Pico (even overclocked at 200MHz). And in this configuration we have only 256/32 = 8 levels only for each colors ( 512 colors max ).
 
 ## Utilities
-
+In the main.c file you can display Gif files. But to be compatible with the arm c compiler, I've decided to rewrite each of my gif files as bytes array in a .h text file. To do this I wrote a VB6 program 'PIXTOH'.
